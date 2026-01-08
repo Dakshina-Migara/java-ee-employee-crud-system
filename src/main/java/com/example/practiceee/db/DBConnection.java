@@ -7,41 +7,36 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DBConnection {
-    private static DBConnection dbConnection;
-    private HikariDataSource dataSource;
+    private static DBConnection instance;
+    private HikariDataSource ds;
 
     private DBConnection() {
+        try {
+            // Load MySQL driver explicitly (required in Tomcat sometimes)
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         HikariConfig config = new HikariConfig();
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/sanka_seafood?useSSL=false&serverTimezone=UTC");
+        config.setUsername("root"); // change if different
+        config.setPassword("1234"); // change if different
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/sanka_seafood");
-        config.setUsername("root");
-        config.setPassword("1234");
-
-        config.setMaximumPoolSize(10);
-        config.setMinimumIdle(1);
-        config.setMaxLifetime(30000);
-
-        dataSource = new HikariDataSource(config);
+        ds = new HikariDataSource(config);
     }
 
     public static DBConnection getInstance() {
-        if (dbConnection == null) {
-            synchronized (DBConnection.class) {
-                if (dbConnection == null) {
-                    dbConnection = new DBConnection();
-                }
-            }
+        if (instance == null) {
+            instance = new DBConnection();
         }
-        return dbConnection;
+        return instance;
     }
 
     public Connection getConnection() throws SQLException {
-        return dataSource.getConnection();
-    }
-
-    public void closeDataSource() {
-        if (dataSource != null && !dataSource.isClosed()) {
-            dataSource.close();
-        }
+        return ds.getConnection();
     }
 }

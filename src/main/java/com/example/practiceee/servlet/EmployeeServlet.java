@@ -13,11 +13,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-@WebServlet("/employees")
+@WebServlet("/employee")
 public class EmployeeServlet extends HttpServlet {
 
     private final EmployeeService employeeService = new EmployeeServiceImpl();
-    private Gson gson = new Gson();
+    private final Gson gson = new Gson();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -28,14 +28,20 @@ public class EmployeeServlet extends HttpServlet {
                     sb.append(line);
                 }
             }
+
             EmployeeDto employee = gson.fromJson(sb.toString(), EmployeeDto.class);
-            employeeService.saveEmployee(employee);
-            response.getWriter().write("{\"status\":\"success\",\"message\":\"Employee saved successfully\"}");
+            EmployeeDto savedEmployee = employeeService.saveEmployee(employee);
+
+            if (savedEmployee != null) {
+                response.getWriter().write("{\"status\":\"success\",\"message\":\"Employee saved successfully\"}");
+            } else {
+                response.getWriter().write("{\"status\":\"error\",\"message\":\"Failed to save employee\"}");
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("{\"status\":\"error\",\"message\":\"Failed to save employee\"}");
+            response.getWriter().write("{\"status\":\"error\",\"message\":\"Server error\"}");
         }
     }
 

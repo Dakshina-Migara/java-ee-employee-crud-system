@@ -11,15 +11,15 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto saveEmployee(EmployeeDto employeeDto) {
-        String sql = "INSERT INTO employee(employee_nic, employee_name, employee_age, employee_salary) VALUES (?, ?, ?, ?)";
+        String sql = "insert into employee(employee_nic, employee_name, employee_age, employee_salary) values (?, ?, ?, ?)";
 
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            pst.setString(1, employeeDto.getNic());
-            pst.setString(2, employeeDto.getName());
-            pst.setInt(3, employeeDto.getAge());
-            pst.setDouble(4, employeeDto.getSalary());
+            pst.setObject(1, employeeDto.getNic());
+            pst.setObject(2, employeeDto.getName());
+            pst.setObject(3, employeeDto.getAge());
+            pst.setObject(4, employeeDto.getSalary());
 
             int affectedRows = pst.executeUpdate();
 

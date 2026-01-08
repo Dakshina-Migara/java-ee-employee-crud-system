@@ -219,13 +219,14 @@
 
     function saveEmployee() {
         const employee = {
-            nic: empNic.value,
-            name: empName.value,
-            age: parseInt(empAge.value),
-            salary: parseFloat(empSalary.value),
+            nic: document.getElementById('empNic').value,
+            name: document.getElementById('empName').value,
+            age: parseInt(document.getElementById('empAge').value),
+            salary: parseFloat(document.getElementById('empSalary').value)
         };
+        console.log(employee);
 
-        fetch('http://localhost:8080/practice_ee_war_exploded/employees', {
+        fetch('http://localhost:8080/practice_ee_war_exploded/employee', {
             method: 'POST',
             body: JSON.stringify(employee),
             headers: {
@@ -233,13 +234,10 @@
             },
         })
             .then((response) => response.json())
-            .then((data) => {
-                alert("employee saved successfully");
-                location.reload();
+            .then(data => {
+                alert(data.message);
             })
-            .catch((error) => {
-                console.log("error", error);
-            })
+            .catch(err => console.log("Error:", err));
     }
     console.log("success")
 
