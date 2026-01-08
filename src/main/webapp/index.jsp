@@ -225,7 +225,7 @@
             salary: parseFloat(empSalary.value),
         };
 
-        fetch('http://localhost:8080/practice_ee_war_exploded/employee', {
+        fetch('http://localhost:8080/practice_ee_war_exploded/employees', {
             method: 'POST',
             body: JSON.stringify(employee),
             headers: {
@@ -241,6 +241,7 @@
                 console.log("error", error);
             })
     }
+    console.log("success")
 
     function getAllEmployee() {
         console.log('js loaded');
