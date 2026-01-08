@@ -11,6 +11,7 @@
         body {
             background-color: #f8f9fa;
         }
+
         .card {
             margin-top: 20px;
         }
@@ -51,7 +52,7 @@
                             <input type="number" class="form-control" id="empSalary" placeholder="Enter Salary">
                         </div>
 
-                        <button type="button" class="btn btn-success w-100" id="btnSaveEmployee">
+                        <button type="button" class="btn btn-success w-100" onclick="saveEmployee()">
                             Save Employee
                         </button>
 
@@ -102,8 +103,12 @@
                             <td>25</td>
                             <td>50000</td>
                             <td>
-                                <button class="btn btn-warning btn-sm btn-update" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
-                                <button class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                                <button class="btn btn-warning btn-sm btn-update" data-bs-toggle="modal"
+                                        data-bs-target="#updateModal">Update
+                                </button>
+                                <button class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal">Delete
+                                </button>
                             </td>
                         </tr>
 
@@ -113,8 +118,12 @@
                             <td>30</td>
                             <td>65000</td>
                             <td>
-                                <button class="btn btn-warning btn-sm btn-update" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
-                                <button class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                                <button class="btn btn-warning btn-sm btn-update" data-bs-toggle="modal"
+                                        data-bs-target="#updateModal">Update
+                                </button>
+                                <button class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal">Delete
+                                </button>
                             </td>
                         </tr>
 
@@ -124,8 +133,12 @@
                             <td>28</td>
                             <td>72000</td>
                             <td>
-                                <button class="btn btn-warning btn-sm btn-update" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
-                                <button class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                                <button class="btn btn-warning btn-sm btn-update" data-bs-toggle="modal"
+                                        data-bs-target="#updateModal">Update
+                                </button>
+                                <button class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal">Delete
+                                </button>
                             </td>
                         </tr>
                         <!-- ===== DUMMY DATA END ===== -->
@@ -201,7 +214,37 @@
 </div>
 
 <!-- Bootstrap JS (required for modals) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    console.log('js loaded');
 
+    function saveEmployee() {
+        const employee = {
+            nic: empNic.value,
+            name: empName.value,
+            age: parseInt(empAge.value),
+            salary: parseFloat(empSalary.value),
+        };
+
+        fetch('http://localhost:8080/practice_ee_war_exploded/employee', {
+            method: 'POST',
+            body: JSON.stringify(employee),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                alert("employee saved successfully");
+                location.reload();
+            })
+            .catch((error) => {
+                console.log("error", error);
+            })
+    }
+
+    function getAllEmployee() {
+        console.log('js loaded');
+    }
+</script>
 </body>
 </html>
