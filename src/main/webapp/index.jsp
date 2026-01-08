@@ -2,12 +2,248 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>Employee Management System</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
+
+<div class="container-fluid mt-4">
+    <div class="row">
+
+        <!-- ================= LEFT SIDE : SAVE EMPLOYEE ================= -->
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Save Employee</h5>
+                </div>
+
+                <div class="card-body">
+                    <form id="saveEmployeeForm">
+
+                        <div class="mb-3">
+                            <label class="form-label">NIC</label>
+                            <input type="text" class="form-control" id="empNic" placeholder="Enter NIC">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" id="empName" placeholder="Enter Name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Age</label>
+                            <input type="number" class="form-control" id="empAge" placeholder="Enter Age">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Salary</label>
+                            <input type="number" class="form-control" id="empSalary" placeholder="Enter Salary">
+                        </div>
+
+                        <button type="button" class="btn btn-success w-100" onclick="saveEmployee()">
+                            Save Employee
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= RIGHT SIDE : SEARCH + TABLE ================= -->
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Employee Details</h5>
+                </div>
+
+                <div class="card-body">
+
+                    <!-- Search Bar -->
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="searchNic" placeholder="Search by NIC">
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary w-100" id="btnSearchEmployee">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Employee Table -->
+                    <table class="table table-bordered table-striped" id="employeeTable">
+                        <thead class="table-secondary">
+                        <tr>
+                            <th>Name</th>
+                            <th>NIC</th>
+                            <th>Age</th>
+                            <th>Salary</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+
+                        <tbody id="employeeTableBody">
+
+                        <!-- ===== DUMMY DATA START ===== -->
+                        <tr>
+                            <td>Kamal Perera</td>
+                            <td>991234567V</td>
+                            <td>25</td>
+                            <td>50000</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm btn-update" data-bs-toggle="modal"
+                                        data-bs-target="#updateModal">Update
+                                </button>
+                                <button class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal">Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Nimal Silva</td>
+                            <td>982345678V</td>
+                            <td>30</td>
+                            <td>65000</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm btn-update" data-bs-toggle="modal"
+                                        data-bs-target="#updateModal">Update
+                                </button>
+                                <button class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal">Delete
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Saman Jayasinghe</td>
+                            <td>200012345678</td>
+                            <td>28</td>
+                            <td>72000</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm btn-update" data-bs-toggle="modal"
+                                        data-bs-target="#updateModal">Update
+                                </button>
+                                <button class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal">Delete
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- ===== DUMMY DATA END ===== -->
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ================= MODAL FOR UPDATE ================= -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title" id="updateModalLabel">Update Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="updateEmployeeForm">
+                    <div class="mb-3">
+                        <label class="form-label">NIC</label>
+                        <input type="text" class="form-control" id="updateEmpNic" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" id="updateEmpName">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Age</label>
+                        <input type="number" class="form-control" id="updateEmpAge">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Salary</label>
+                        <input type="number" class="form-control" id="updateEmpSalary">
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-warning" id="btnConfirmUpdate">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ================= MODAL FOR DELETE ================= -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Employee</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <p>Are you sure you want to delete this employee?</p>
+                <p><strong id="deleteEmpDetails"></strong></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="btnConfirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS (required for modals) -->
+<script>
+    console.log('js loaded');
+
+    function saveEmployee() {
+        const employee = {
+            nic: document.getElementById('empNic').value,
+            name: document.getElementById('empName').value,
+            age: parseInt(document.getElementById('empAge').value),
+            salary: parseFloat(document.getElementById('empSalary').value)
+        };
+        console.log(employee);
+
+        fetch('http://localhost:8080/practice_ee_war_exploded/employee', {
+            method: 'POST',
+            body: JSON.stringify(employee),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+            .then((response) => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(err => console.log("Error:", err));
+    }
+    console.log("success")
+
+    function getAllEmployee() {
+        console.log('js loaded');
+    }
+</script>
 </body>
 </html>
