@@ -76,14 +76,14 @@
                             <input type="text" class="form-control" id="searchNic" placeholder="Search by NIC">
                         </div>
                         <div class="col-md-4">
-                            <button class="btn btn-primary w-100" id="btnSearchEmployee">
+                            <button type="button" class="btn btn-primary w-100" onclick="serachEmployee()">
                                 Search
                             </button>
                         </div>
                     </div>
 
                     <!-- Employee Table -->
-                    <table class="table table-bordered table-striped" id="employeeTable">
+                    <table class="table table-bordered table-striped">
                         <thead class="table-secondary">
                         <tr>
                             <th>Name</th>
@@ -184,8 +184,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-warning" id="btnConfirmUpdate">Update</button>
+                <button type="button" class="btn btn-warning" onclick="updateEmployee()">Update</button>
             </div>
         </div>
     </div>
@@ -206,8 +205,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="btnConfirmDelete">Delete</button>
+                <button type="button" class="btn btn-danger" onclick="deleteEmployee()">Delete</button>
             </div>
         </div>
     </div>
@@ -215,9 +213,12 @@
 
 <!-- Bootstrap JS (required for modals) -->
 <script>
-    console.log('js loaded');
+    console.log("JS Loaded Successfully");
+    getAllEmployee();
 
+    //create the saveEmployee function
     function saveEmployee() {
+        console.log("ethulata giya")
         const employee = {
             nic: document.getElementById('empNic').value,
             name: document.getElementById('empName').value,
@@ -235,14 +236,41 @@
         })
             .then((response) => response.json())
             .then(data => {
-                alert(data.message);
+                alert("employee saved successfully!");
+                getAllEmployee();
             })
             .catch(err => console.log("Error:", err));
     }
-    console.log("success")
 
+    // create the getAllEmployee function
     function getAllEmployee() {
-        console.log('js loaded');
+        console.log("get all eka ethulata giya");
+
+        fetch('http://localhost:8080/practice_ee_war_exploded/employee')
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('employeeTableBody');
+                tbody.innerHTML = "";
+                data.forEach(emp => {
+                    const row = `<tr>
+                                  <td>\${emp.nic}</td>
+                                  <td>\${emp.name}</td>
+                                  <td>\${emp.age}</td>
+                                  <td>\${emp.salary}</td>
+                           <td>
+                                  <button class="btn btn-warning btn-sm btn-update" onclick="populateUpdateModal(\${emp.nic}, '\${emp.name}', \${emp.age}, \${emp.salary})">Update</button>
+                                  <button class="btn btn-danger btn-sm btn-delete" onclick="populateDeleteModal(\${emp.nic})">Delete</button>
+                           </td>
+                                  </tr>`;
+                    tbody.innerHTML += row;
+                });
+            })
+            .catch(err => console.log(err));
+        console.log("get all eken eliyata awa");
+    }
+
+    function searchEmployee() {
+
     }
 </script>
 </body>
