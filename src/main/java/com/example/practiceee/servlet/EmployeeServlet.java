@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/employee")
 public class EmployeeServlet extends HttpServlet {
@@ -50,7 +51,14 @@ public class EmployeeServlet extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
 
-            var employees = employeeService.getAllEmployees();
+            String nic = request.getParameter("nic"); // get NIC from query param
+            List<EmployeeDto> employees;
+
+            if (nic == null || nic.isEmpty()) {
+                employees = employeeService.getAllEmployees();
+            } else {
+                employees = employeeService.searchEmployees(nic); // call your service method
+            }
 
             String json = gson.toJson(employees);
             response.getWriter().write(json);
