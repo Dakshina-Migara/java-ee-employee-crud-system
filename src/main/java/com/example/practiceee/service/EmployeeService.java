@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface EmployeeService {
     EmployeeDto saveEmployee(EmployeeDto employeeDto);
-    EmployeeDto updateEmployee(EmployeeDto employeeDto);
+    boolean updateEmployee(EmployeeDto employeeDto);
     boolean deleteEmployee(String nic);
     List<EmployeeDto> getAllEmployees();
     List<EmployeeDto> searchEmployees(String nic);
