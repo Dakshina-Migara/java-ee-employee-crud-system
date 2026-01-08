@@ -36,8 +36,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDto updateEmployee(EmployeeDto employeeDto) {
-        return null;
+    public boolean updateEmployee(EmployeeDto employeeDto) {
+        return false;
     }
 
     @Override
@@ -47,7 +47,29 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<EmployeeDto> getAllEmployees() {
-        return List.of();
+        String sql = "SELECT * FROM employee";
+
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql);
+             var rs = pst.executeQuery()) {
+
+            List<EmployeeDto> employees = new java.util.ArrayList<>();
+
+            while (rs.next()) {
+                EmployeeDto emp = new EmployeeDto();
+                emp.setNic(rs.getString("employee_nic"));
+                emp.setName(rs.getString("employee_name"));
+                emp.setAge(rs.getInt("employee_age"));
+                emp.setSalary(rs.getDouble("employee_salary"));
+                employees.add(emp);
+            }
+
+            return employees;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
     }
 
     @Override
