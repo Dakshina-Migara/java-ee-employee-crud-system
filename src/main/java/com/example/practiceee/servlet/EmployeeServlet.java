@@ -117,5 +117,35 @@ public class EmployeeServlet extends HttpServlet {
         }
     }
 
+    // ================= DELETE EMPLOYEE =================
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
+        try {
+            String nic = request.getParameter("nic");
+            if (nic == null || nic.trim().isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("{\"status\":\"error\",\"message\":\"NIC required\"}");
+                return;
+            }
+
+            boolean deleted = employeeService.deleteEmployee(nic.trim());
+
+            if (deleted) {
+                response.getWriter().write("{\"status\":\"success\",\"message\":\"Employee deleted successfully\"}");
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("{\"status\":\"error\",\"message\":\"Failed to delete employee\"}");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            response.getWriter().write("{\"status\":\"error\",\"message\":\"Server error\"}");
+        }
+    }
 }
