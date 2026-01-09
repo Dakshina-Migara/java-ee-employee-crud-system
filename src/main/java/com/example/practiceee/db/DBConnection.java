@@ -22,9 +22,8 @@ public class DBConnection {
         config.setJdbcUrl("jdbc:mysql://localhost:3306/sanka_seafood?useSSL=false&serverTimezone=UTC");
         config.setUsername("root"); // change if different
         config.setPassword("1234"); // change if different
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.setMaximumPoolSize(10);
+        config.setConnectionTimeout(30000);
 
         ds = new HikariDataSource(config);
     }
