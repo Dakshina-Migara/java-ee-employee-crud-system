@@ -3,18 +3,10 @@
 <html>
 <head>
     <title>Employee Management System</title>
-
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .card {
-            margin-top: 20px;
-        }
+        body { background-color: #f8f9fa; }
+        .card { margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -22,67 +14,37 @@
 <div class="container-fluid mt-4">
     <div class="row">
 
-        <!-- ================= LEFT SIDE : SAVE EMPLOYEE ================= -->
+        <!-- SAVE EMPLOYEE -->
         <div class="col-md-4">
             <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">Save Employee</h5>
-                </div>
-
+                <div class="card-header bg-primary text-white">Save Employee</div>
                 <div class="card-body">
-                    <form id="saveEmployeeForm">
-
-                        <div class="mb-3">
-                            <label class="form-label">NIC</label>
-                            <input type="text" class="form-control" id="empNic" placeholder="Enter NIC">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Name</label>
-                            <input type="text" class="form-control" id="empName" placeholder="Enter Name">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Age</label>
-                            <input type="number" class="form-control" id="empAge" placeholder="Enter Age">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Salary</label>
-                            <input type="number" class="form-control" id="empSalary" placeholder="Enter Salary">
-                        </div>
-
-                        <button type="button" class="btn btn-success w-100" onclick="saveEmployee()">
-                            Save Employee
-                        </button>
-
-                    </form>
+                    <input id="empNic" class="form-control mb-2" placeholder="NIC">
+                    <input id="empName" class="form-control mb-2" placeholder="Name">
+                    <input id="empAge" type="number" class="form-control mb-2" placeholder="Age">
+                    <input id="empSalary" type="number" class="form-control mb-3" placeholder="Salary">
+                    <button class="btn btn-success w-100" onclick="saveEmployee()">Save</button>
                 </div>
             </div>
         </div>
 
-        <!-- ================= RIGHT SIDE : SEARCH + TABLE ================= -->
+        <!-- SEARCH + TABLE -->
         <div class="col-md-8">
             <div class="card shadow">
-                <div class="card-header bg-dark text-white">
-                    <h5 class="mb-0">Employee Details</h5>
-                </div>
-
+                <div class="card-header bg-dark text-white">Employee Details</div>
                 <div class="card-body">
 
-                    <!-- Search Bar -->
+                    <!-- SEARCH BAR -->
                     <div class="row mb-3">
                         <div class="col-md-8">
-                            <input type="text" class="form-control" id="searchNic" placeholder="Search by NIC">
+                            <input id="searchNic" class="form-control" placeholder="Search by NIC">
                         </div>
                         <div class="col-md-4">
-                            <button type="button" class="btn btn-primary w-100" onclick="serachEmployee()">
-                                Search
-                            </button>
+                            <button class="btn btn-primary w-100" onclick="searchEmployee()">Search</button>
                         </div>
                     </div>
 
-                    <!-- Employee Table -->
+                    <!-- TABLE -->
                     <table class="table table-bordered table-striped">
                         <thead class="table-secondary">
                         <tr>
@@ -93,57 +55,7 @@
                             <th>Action</th>
                         </tr>
                         </thead>
-
-                        <tbody id="employeeTableBody">
-
-                        <!-- ===== DUMMY DATA START ===== -->
-                        <tr>
-                            <td>Kamal Perera</td>
-                            <td>991234567V</td>
-                            <td>25</td>
-                            <td>50000</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm btn-update" data-bs-toggle="modal"
-                                        data-bs-target="#updateModal">Update
-                                </button>
-                                <button class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal">Delete
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Nimal Silva</td>
-                            <td>982345678V</td>
-                            <td>30</td>
-                            <td>65000</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm btn-update" data-bs-toggle="modal"
-                                        data-bs-target="#updateModal">Update
-                                </button>
-                                <button class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal">Delete
-                                </button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Saman Jayasinghe</td>
-                            <td>200012345678</td>
-                            <td>28</td>
-                            <td>72000</td>
-                            <td>
-                                <button class="btn btn-warning btn-sm btn-update" data-bs-toggle="modal"
-                                        data-bs-target="#updateModal">Update
-                                </button>
-                                <button class="btn btn-danger btn-sm btn-delete" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal">Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <!-- ===== DUMMY DATA END ===== -->
-
-                        </tbody>
+                        <tbody id="employeeTableBody"></tbody>
                     </table>
 
                 </div>
@@ -153,125 +65,170 @@
     </div>
 </div>
 
-<!-- ================= MODAL FOR UPDATE ================= -->
-<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+<!-- SEARCH MODAL -->
+<div class="modal fade" id="viewModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header bg-warning text-dark">
-                <h5 class="modal-title" id="updateModalLabel">Update Employee</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title">Employee Details</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-
             <div class="modal-body">
-                <form id="updateEmployeeForm">
-                    <div class="mb-3">
-                        <label class="form-label">NIC</label>
-                        <input type="text" class="form-control" id="updateEmpNic" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Name</label>
-                        <input type="text" class="form-control" id="updateEmpName">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Age</label>
-                        <input type="number" class="form-control" id="updateEmpAge">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Salary</label>
-                        <input type="number" class="form-control" id="updateEmpSalary">
-                    </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning" onclick="updateEmployee()">Update</button>
+                <p><b>NIC:</b> <span id="viewEmpNic"></span></p>
+                <p><b>Name:</b> <span id="viewEmpName"></span></p>
+                <p><b>Age:</b> <span id="viewEmpAge"></span></p>
+                <p><b>Salary:</b> <span id="viewEmpSalary"></span></p>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ================= MODAL FOR DELETE ================= -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<!-- UPDATE MODAL -->
+<div class="modal fade" id="updateModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="deleteModalLabel">Delete Employee</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
+            <div class="modal-header bg-warning">Update Employee</div>
             <div class="modal-body">
-                <p>Are you sure you want to delete this employee?</p>
-                <p><strong id="deleteEmpDetails"></strong></p>
+                <input id="updateNic" class="form-control mb-2" readonly>
+                <input id="updateName" class="form-control mb-2">
+                <input id="updateAge" type="number" class="form-control mb-2">
+                <input id="updateSalary" type="number" class="form-control">
             </div>
-
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" onclick="deleteEmployee()">Delete</button>
+                <button class="btn btn-warning" onclick="updateEmployee()">Update</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Bootstrap JS (required for modals) -->
+<!-- DELETE MODAL -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">Delete Employee</div>
+            <div class="modal-body">
+                Are you sure you want to delete <b id="deleteNic"></b>?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" onclick="deleteEmployee()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS -->
 <script>
-    console.log("JS Loaded Successfully");
     getAllEmployee();
 
-    //create the saveEmployee function
     function saveEmployee() {
-        console.log("ethulata giya")
-        const employee = {
-            nic: document.getElementById('empNic').value,
-            name: document.getElementById('empName').value,
-            age: parseInt(document.getElementById('empAge').value),
-            salary: parseFloat(document.getElementById('empSalary').value)
+        const emp = {
+            nic: empNic.value,
+            name: empName.value,
+            age: +empAge.value,
+            salary: +empSalary.value
         };
-        console.log(employee);
-
-        fetch('http://localhost:8080/practice_ee_war_exploded/employee', {
-            method: 'POST',
-            body: JSON.stringify(employee),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-            .then((response) => response.json())
-            .then(data => {
-                alert("employee saved successfully!");
-                getAllEmployee();
-            })
-            .catch(err => console.log("Error:", err));
+        fetch("http://localhost:8080/practice_ee_war_exploded/employee", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(emp)
+        }).then(() => getAllEmployee());
     }
 
-    // create the getAllEmployee function
     function getAllEmployee() {
-        console.log("get all eka ethulata giya");
-
-        fetch('http://localhost:8080/practice_ee_war_exploded/employee')
-            .then(res => res.json())
+        fetch("http://localhost:8080/practice_ee_war_exploded/employee")
+            .then(r => r.json())
             .then(data => {
-                const tbody = document.getElementById('employeeTableBody');
-                tbody.innerHTML = "";
+                employeeTableBody.innerHTML = "";
                 data.forEach(emp => {
-                    const row = `<tr>
-                                  <td>\${emp.nic}</td>
-                                  <td>\${emp.name}</td>
-                                  <td>\${emp.age}</td>
-                                  <td>\${emp.salary}</td>
-                           <td>
-                                  <button class="btn btn-warning btn-sm btn-update" onclick="populateUpdateModal(\${emp.nic}, '\${emp.name}', \${emp.age}, \${emp.salary})">Update</button>
-                                  <button class="btn btn-danger btn-sm btn-delete" onclick="populateDeleteModal(\${emp.nic})">Delete</button>
-                           </td>
-                                  </tr>`;
-                    tbody.innerHTML += row;
+                    employeeTableBody.innerHTML += `
+                    <tr>
+                        <td>\${emp.name}</td>
+                        <td>\${emp.nic}</td>
+                        <td>\${emp.age}</td>
+                        <td>\${emp.salary}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="openUpdateModal('\${emp.nic}','\${emp.name}',\${emp.age},\${emp.salary})">Update</button>
+                            <button class="btn btn-danger btn-sm" onclick="openDeleteModal('\${emp.nic}')">Delete</button>
+                        </td>
+                    </tr>`;
                 });
-            })
-            .catch(err => console.log(err));
-        console.log("get all eken eliyata awa");
+            });
     }
 
     function searchEmployee() {
+        const nic = searchNic.value.trim();
+        if (!nic) { alert("Please enter NIC"); return; }
 
+        fetch("http://localhost:8080/practice_ee_war_exploded/employee?nic=" + nic)
+            .then(r => r.json())
+            .then(data => {
+                if (!Array.isArray(data) || data.length === 0) { alert("No employee found"); return; }
+                const emp = data[0];
+                viewEmpNic.textContent = emp.nic;
+                viewEmpName.textContent = emp.name;
+                viewEmpAge.textContent = emp.age;
+                viewEmpSalary.textContent = emp.salary;
+                new bootstrap.Modal(viewModal).show();
+            });
     }
+
+    // Open Update Modal
+    function openUpdateModal(nic, name, age, salary) {
+        document.getElementById("updateNic").value = nic;
+        document.getElementById("updateName").value = name;
+        document.getElementById("updateAge").value = age;
+        document.getElementById("updateSalary").value = salary;
+        new bootstrap.Modal(document.getElementById("updateModal")).show();
+    }
+
+    // Open Delete Modal
+    function openDeleteModal(nic) {
+        document.getElementById("deleteNic").textContent = nic;
+        new bootstrap.Modal(document.getElementById("deleteModal")).show();
+    }
+
+
+    function updateEmployee() {
+        const emp = {
+            nic: document.getElementById("updateNic").value,
+            name: document.getElementById("updateName").value,
+            age: parseInt(document.getElementById("updateAge").value),
+            salary: parseFloat(document.getElementById("updateSalary").value)
+        };
+
+        fetch("/practice_ee_war_exploded/employee", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(emp)
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert("Employee updated successfully!");
+                getAllEmployee(); // refresh table
+                bootstrap.Modal.getInstance(document.getElementById("updateModal")).hide();
+            })
+            .catch(err => console.log("Update error:", err));
+    }
+
+    function deleteEmployee() {
+        const nic = document.getElementById("deleteNic").textContent;
+
+        fetch("/practice_ee_war_exploded/employee?nic=" + nic, {
+            method: "DELETE"
+        })
+            .then(res => res.json())
+            .then(data => {
+                alert("Employee deleted successfully!");
+                getAllEmployee(); // refresh table
+                bootstrap.Modal.getInstance(document.getElementById("deleteModal")).hide();
+            })
+            .catch(err => console.log("Delete error:", err));
+    }
+
+
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
